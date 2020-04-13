@@ -1,10 +1,13 @@
 package cli
 
 import (
+	"errors"
 	"fmt"
 	"github.com/aizu-go-kapro/photo-resizer/pkg/photos/application"
 	"gopkg.in/urfave/cli.v2"
 )
+
+var MissingArgumentError = errors.New("not enough argument error")
 
 // 入れさせたいコマンド photo-converter --rate 50 --grayscale --pixelate 3 [input file] [output file]
 
@@ -19,11 +22,11 @@ func GenerateClientApp(service application.PhotoService) *cli.App {
 
 		Flags: []cli.Flag{
 			&cli.Float64Flag{
-				Name:     "rate",
-				Aliases:  []string{"r"},
-				Value:    100.0,
-				Usage:    "resizing `PERCENTAGE`",
-				Required: true,
+				Name:    "rate",
+				Aliases: []string{"r"},
+				Value:   100.0,
+				Usage:   "resizing `PERCENTAGE`",
+				// Required: true,
 			},
 			&cli.Int64Flag{
 				Name:    "pixelate",
@@ -40,6 +43,11 @@ func GenerateClientApp(service application.PhotoService) *cli.App {
 		},
 
 		Action: func(c *cli.Context) error {
+			if c.NArg() != 2 {
+				_ = cli.ShowAppHelp(c)
+				return MissingArgumentError
+			}
+
 			fmt.Println("boom! I say!")
 			return nil
 		},
