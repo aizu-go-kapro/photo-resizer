@@ -2,7 +2,6 @@ package cli
 
 import (
 	"errors"
-	"fmt"
 	"github.com/aizu-go-kapro/photo-resizer/pkg/photos/application"
 	"gopkg.in/urfave/cli.v2"
 )
@@ -22,16 +21,16 @@ func GenerateClientApp(service application.PhotoService) *cli.App {
 
 		Flags: []cli.Flag{
 			&cli.Float64Flag{
-				Name:    "rate",
-				Aliases: []string{"r"},
-				Value:   100.0,
-				Usage:   "resizing `PERCENTAGE`",
-				// Required: true,
+				Name:     "rate",
+				Aliases:  []string{"r"},
+				Value:    100.0,
+				Usage:    "resizing `PERCENTAGE`",
+				Required: true,
 			},
-			&cli.Int64Flag{
+			&cli.IntFlag{
 				Name:    "pixelate",
 				Aliases: []string{"p"},
-				Value:   30,
+				Value:   0,
 				Usage:   "pixelize one `SIDE`",
 			},
 			&cli.BoolFlag{
@@ -48,7 +47,40 @@ func GenerateClientApp(service application.PhotoService) *cli.App {
 				return MissingArgumentError
 			}
 
-			fmt.Println("boom! I say!")
+			INPUT_FILE_PATH := c.Args().Get(0)
+			OUTPUT_FILE_PATH := c.Args().Get(1)
+			PIXELATE_SIDE := c.Int("pixelate")
+			IS_GRAYSCALE := c.Bool("grayscale")
+
+			err := service.ImportPhotoFromPath(INPUT_FILE_PATH)
+			if err != nil {
+				return err
+			}
+
+			err = service.ImportPhotoFromPath(INPUT_FILE_PATH)
+			if err != nil {
+				return err
+			}
+
+			if IS_GRAYSCALE {
+				err = service.GrayScalePhoto()
+				if err != nil {
+					return err
+				}
+			}
+
+			if PIXELATE_SIDE > 0 {
+				err = service.PixelatePhoto(PIXELATE_SIDE)
+				if err != nil {
+					return err
+				}
+			}
+
+			err = service.ExportPhotoToPath(OUTPUT_FILE_PATH)
+			if err != nil {
+				return err
+			}
+
 			return nil
 		},
 	}
