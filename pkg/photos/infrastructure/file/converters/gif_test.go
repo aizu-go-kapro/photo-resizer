@@ -28,7 +28,7 @@ func TestGifConverter_Open(t *testing.T) {
 
 // edited: https://github.com/golang/tour/blob/master/pic/pic.go#L35
 func writeImage(m image.Image) string {
-	file, err := ioutil.TempFile(os.TempDir(), "tempPhoto.png")
+	file, err := ioutil.TempFile(os.TempDir(), "*-temp-photo.png")
 	if err != nil {
 		panic(err)
 	}
