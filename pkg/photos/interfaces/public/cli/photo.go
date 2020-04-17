@@ -3,7 +3,7 @@ package cli
 import (
 	"fmt"
 	"github.com/aizu-go-kapro/photo-resizer/pkg/photos/application"
-	"gopkg.in/urfave/cli.v2"
+	"github.com/urfave/cli/v2"
 )
 
 // 入れさせたいコマンド photo-converter --rate 50 --grayscale --pixelate 3 [input file] [output file]
