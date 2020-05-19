@@ -25,27 +25,42 @@ func writeImage(m image.Image) (*os.File, error) {
 	return file, nil
 }
 
-func getAnimatedPhoto() photos.Photo {
+func getAnimatedPhoto() (photos.Photo, error) {
 	var animatedImages []image.Image
 	for i := 1; i <= 10; i++ {
-		file, _ := os.Open(fmt.Sprintf("test-resources/test-img%02d.png", i))
-		pngImage, _ := png.Decode(file)
+		file, err := os.Open(fmt.Sprintf("test-resources/test-img%02d.png", i))
+		if err != nil {
+			return photos.Photo{}, err
+		}
+		pngImage, err := png.Decode(file)
+		if err != nil {
+			return photos.Photo{}, err
+		}
 		animatedImages = append(animatedImages, pngImage)
 	}
-	return photos.NewPhoto(animatedImages)
+	return photos.NewPhoto(animatedImages), nil
 }
 
-func getOptimizedGifResource() *os.File {
-	file, _ := os.Open(filepath.Join("test-resources", "test-img.gif"))
-	return file
+func getOptimizedGifResource() (*os.File, error) {
+	file, err := os.Open(filepath.Join("test-resources", "test-img.gif"))
+	if err != nil {
+		return nil, err
+	}
+	return file, nil
 }
 
-func getJpegResource() *os.File {
-	file, _ := os.Open(filepath.Join("test-resources", "smptebars.jpg"))
-	return file
+func getJpegResource() (*os.File, error) {
+	file, err := os.Open(filepath.Join("test-resources", "smptebars.jpg"))
+	if err != nil {
+		return nil, err
+	}
+	return file, nil
 }
 
-func getPngResource() *os.File {
-	file, _ := os.Open(filepath.Join("test-resources", "rgbtest.png"))
-	return file
+func getPngResource() (*os.File, error) {
+	file, err := os.Open(filepath.Join("test-resources", "rgbtest.png"))
+	if err != nil {
+		return nil, err
+	}
+	return file, nil
 }
