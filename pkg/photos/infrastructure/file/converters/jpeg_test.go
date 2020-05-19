@@ -11,7 +11,10 @@ import (
 
 func TestJpegConverter_Open(t *testing.T) {
 	jpegConverter := NewJpegConverter()
-	jpegFile := getJpegResource()
+	jpegFile, err := getJpegResource()
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	jpegPhotos, err := jpegConverter.Open(jpegFile)
 	if err != nil {
@@ -19,15 +22,25 @@ func TestJpegConverter_Open(t *testing.T) {
 	}
 
 	for _, m := range jpegPhotos.Images() {
-		filePath := writeImage(m).Name()
+		file, err := writeImage(m)
+		if err != nil {
+			t.Fatal(err)
+		}
+		filePath := file.Name()
 		fmt.Println("The file path : ", filePath)
-		_ = browser.OpenURL(filePath)
+		err = browser.OpenURL(filePath)
+		if err != nil {
+			t.Fatal(err)
+		}
 	}
 }
 
 func TestJpegConverter_Save(t *testing.T) {
 	jpegConverter := NewJpegConverter()
-	photosData := getAnimatedPhoto()
+	photosData, err := getAnimatedPhoto()
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	file, err := ioutil.TempFile(os.TempDir(), "*-temp-photo.jpg")
 	if err != nil {
@@ -41,5 +54,8 @@ func TestJpegConverter_Save(t *testing.T) {
 
 	filePath := file.Name()
 	fmt.Println("The file path : ", filePath)
-	_ = browser.OpenURL(filePath)
+	err = browser.OpenURL(filePath)
+	if err != nil {
+		t.Fatal(err)
+	}
 }

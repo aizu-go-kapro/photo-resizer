@@ -11,7 +11,10 @@ import (
 
 func TestPngConverter_Open(t *testing.T) {
 	pngConverter := NewPngConverter()
-	pngFile := getPngResource()
+	pngFile, err := getPngResource()
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	pngPhotos, err := pngConverter.Open(pngFile)
 	if err != nil {
@@ -19,15 +22,25 @@ func TestPngConverter_Open(t *testing.T) {
 	}
 
 	for _, m := range pngPhotos.Images() {
-		filePath := writeImage(m).Name()
+		file, err := writeImage(m)
+		if err != nil {
+			t.Fatal(err)
+		}
+		filePath := file.Name()
 		fmt.Println("The file path : ", filePath)
-		_ = browser.OpenURL(filePath)
+		err = browser.OpenURL(filePath)
+		if err != nil {
+			t.Fatal(err)
+		}
 	}
 }
 
 func TestPngConverter_Save(t *testing.T) {
 	pngConverter := NewPngConverter()
-	photosData := getAnimatedPhoto()
+	photosData, err := getAnimatedPhoto()
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	file, err := ioutil.TempFile(os.TempDir(), "*-temp-photo.png")
 	if err != nil {
@@ -41,5 +54,8 @@ func TestPngConverter_Save(t *testing.T) {
 
 	filePath := file.Name()
 	fmt.Println("The file path : ", filePath)
-	_ = browser.OpenURL(filePath)
+	err = browser.OpenURL(filePath)
+	if err != nil {
+		t.Fatal(err)
+	}
 }
