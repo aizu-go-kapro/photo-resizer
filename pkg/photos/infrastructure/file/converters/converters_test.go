@@ -12,17 +12,17 @@ import (
 )
 
 // edited: https://github.com/golang/tour/blob/master/pic/pic.go#L35
-func writeImage(m image.Image) *os.File {
+func writeImage(m image.Image) (*os.File, error) {
 	file, err := ioutil.TempFile(os.TempDir(), "*-temp-photo.png")
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	err = png.Encode(file, m)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return file
+	return file, nil
 }
 
 func getAnimatedPhoto() photos.Photo {
