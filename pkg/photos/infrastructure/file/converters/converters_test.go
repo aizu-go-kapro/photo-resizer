@@ -34,6 +34,16 @@ func getAnimatedPhoto() photos.Photo {
 }
 
 func getOptimizedGifResource() *os.File {
-	file, _ := os.Open("test-resources/nyancat.gif")
+	file, _ := os.Open("test-resources/test-img.gif")
+	return file
+}
+
+func getJpegResource() *os.File {
+	file, _ := os.Open("test-resources/smptebars.jpg")
+	return file
+}
+
+func getPngResource() *os.File {
+	file, _ := os.Open("test-resources/rgbtest.png")
 	return file
 }
