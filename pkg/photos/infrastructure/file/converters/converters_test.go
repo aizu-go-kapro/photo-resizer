@@ -2,11 +2,12 @@ package converters
 
 import (
 	"fmt"
-	"github.com/aizu-go-kapro/photo-resizer/pkg/photos/domain/photos"
 	"image"
 	"image/png"
 	"io/ioutil"
 	"os"
+
+	"github.com/aizu-go-kapro/photo-resizer/pkg/photos/domain/photos"
 )
 
 // edited: https://github.com/golang/tour/blob/master/pic/pic.go#L35

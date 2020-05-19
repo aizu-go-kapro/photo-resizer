@@ -1,9 +1,10 @@
 package converters
 
 import (
-	"github.com/aizu-go-kapro/photo-resizer/pkg/photos/domain/photos"
 	"image"
 	"os"
+
+	"github.com/aizu-go-kapro/photo-resizer/pkg/photos/domain/photos"
 )
 
 type PngConverter struct{}

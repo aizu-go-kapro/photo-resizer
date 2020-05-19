@@ -2,10 +2,11 @@ package converters
 
 import (
 	"fmt"
-	"github.com/pkg/browser"
 	"io/ioutil"
 	"os"
 	"testing"
+
+	"github.com/pkg/browser"
 )
 
 func TestPngConverter_Open(t *testing.T) {
