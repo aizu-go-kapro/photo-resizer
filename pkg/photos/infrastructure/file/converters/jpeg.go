@@ -3,6 +3,7 @@ package converters
 import (
 	"github.com/aizu-go-kapro/photo-resizer/pkg/photos/domain/photos"
 	"image"
+	"image/jpeg"
 	"os"
 )
 
@@ -14,11 +15,19 @@ func NewJpegConverter() JpegConverter {
 
 func (c JpegConverter) Open(imageFile *os.File) (photos.Photo, error) {
 	var newPhoto []image.Image
-	// TODO: Jpeg画像をimage.Imageの配列に変換する処理
+	convertedImage, err := jpeg.Decode(imageFile)
+	newPhoto = append(newPhoto, convertedImage)
+	if err != nil {
+		return photos.Photo{}, err
+	}
 	return photos.NewPhoto(newPhoto), nil
 }
 
 func (c JpegConverter) Save(out *os.File, photo photos.Photo) error {
-	// TODO: image.Imageの配列をJpeg画像に変換する処理。変換したファイルはoutに書き込む。
+	encodingImage := photo.Images()[0] // とりあえず1枚目以外は無視
+	err := jpeg.Encode(out, encodingImage, &jpeg.Options{})
+	if err != nil {
+		return err
+	}
 	return nil
 }
