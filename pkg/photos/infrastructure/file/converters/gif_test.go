@@ -62,10 +62,10 @@ func writeImage(m image.Image) *os.File {
 
 func getAnimatedPhoto() photos.Photo {
 	var animatedImages []image.Image
-	for i := 0; i <= 10; i++ {
-		file, _ := os.Open(fmt.Sprintf("test-resources/test-img%02d.gif", i))
-		image, _ := png.Decode(file)
-		animatedImages = append(animatedImages, image)
+	for i := 1; i <= 10; i++ {
+		file, _ := os.Open(fmt.Sprintf("test-resources/test-img%02d.png", i))
+		pngImage, _ := png.Decode(file)
+		animatedImages = append(animatedImages, pngImage)
 	}
 	return photos.NewPhoto(animatedImages)
 }
