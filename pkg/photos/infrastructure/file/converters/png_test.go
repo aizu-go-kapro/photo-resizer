@@ -15,7 +15,7 @@ func TestPngConverter_Open(t *testing.T) {
 
 	pngPhotos, err := pngConverter.Open(pngFile)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	for _, m := range pngPhotos.Images() {
@@ -36,7 +36,7 @@ func TestPngConverter_Save(t *testing.T) {
 
 	err = pngConverter.Save(file, photosData)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	filePath := file.Name()

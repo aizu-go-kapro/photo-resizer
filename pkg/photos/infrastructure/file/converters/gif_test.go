@@ -15,7 +15,7 @@ func TestGifConverter_Open(t *testing.T) {
 
 	gifPhotos, err := gifConverter.Open(gifFile)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	for _, m := range gifPhotos.Images() {
@@ -31,12 +31,12 @@ func TestGifConverter_Save(t *testing.T) {
 
 	file, err := ioutil.TempFile(os.TempDir(), "*-temp-photo.gif")
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	err = gifConverter.Save(file, photosData)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	filePath := file.Name()

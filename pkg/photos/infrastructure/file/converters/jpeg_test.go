@@ -15,7 +15,7 @@ func TestJpegConverter_Open(t *testing.T) {
 
 	jpegPhotos, err := jpegConverter.Open(jpegFile)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	for _, m := range jpegPhotos.Images() {
@@ -31,12 +31,12 @@ func TestJpegConverter_Save(t *testing.T) {
 
 	file, err := ioutil.TempFile(os.TempDir(), "*-temp-photo.jpg")
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	err = jpegConverter.Save(file, photosData)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	filePath := file.Name()
