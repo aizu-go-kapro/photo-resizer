@@ -15,12 +15,12 @@ func TestGifConverter_Open(t *testing.T) {
 	gifConverter := NewGifConverter()
 	gifFile := getOptimizedGifResource()
 
-	photos, err := gifConverter.Open(gifFile)
+	gifPhotos, err := gifConverter.Open(gifFile)
 	if err != nil {
 		t.Error(err)
 	}
 
-	for _, m := range photos.Images() {
+	for _, m := range gifPhotos.Images() {
 		filePath := writeImage(m).Name()
 		fmt.Println("The file path : ", filePath)
 		_ = browser.OpenURL(filePath)
