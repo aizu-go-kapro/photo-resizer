@@ -6,6 +6,7 @@ import (
 	"image/png"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 
 	"github.com/aizu-go-kapro/photo-resizer/pkg/photos/domain/photos"
 )
@@ -35,16 +36,16 @@ func getAnimatedPhoto() photos.Photo {
 }
 
 func getOptimizedGifResource() *os.File {
-	file, _ := os.Open("test-resources/test-img.gif")
+	file, _ := os.Open(filepath.Join("test-resources", "test-img.gif"))
 	return file
 }
 
 func getJpegResource() *os.File {
-	file, _ := os.Open("test-resources/smptebars.jpg")
+	file, _ := os.Open(filepath.Join("test-resources", "smptebars.jpg"))
 	return file
 }
 
 func getPngResource() *os.File {
-	file, _ := os.Open("test-resources/rgbtest.png")
+	file, _ := os.Open(filepath.Join("test-resources", "rgbtest.png"))
 	return file
 }
