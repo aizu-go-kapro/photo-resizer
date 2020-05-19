@@ -1,7 +1,6 @@
 package converters
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -27,7 +26,7 @@ func TestPngConverter_Open(t *testing.T) {
 			t.Fatal(err)
 		}
 		filePath := file.Name()
-		fmt.Println("The file path : ", filePath)
+		t.Log("The file path : ", filePath)
 		err = browser.OpenURL(filePath)
 		if err != nil {
 			t.Fatal(err)
@@ -53,7 +52,7 @@ func TestPngConverter_Save(t *testing.T) {
 	}
 
 	filePath := file.Name()
-	fmt.Println("The file path : ", filePath)
+	t.Log("The file path : ", filePath)
 	err = browser.OpenURL(filePath)
 	if err != nil {
 		t.Fatal(err)
