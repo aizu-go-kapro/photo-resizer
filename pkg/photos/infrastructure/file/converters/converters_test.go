@@ -1,7 +1,6 @@
 package converters
 
 import (
-	"fmt"
 	"image"
 	"image/png"
 	"io/ioutil"
@@ -27,11 +26,17 @@ func writeImage(m image.Image) (*os.File, error) {
 
 func getAnimatedPhoto() (photos.Photo, error) {
 	var animatedImages []image.Image
-	for i := 1; i <= 10; i++ {
-		file, err := os.Open(fmt.Sprintf("test-resources/test-img%02d.png", i))
+	fileInfos, err := ioutil.ReadDir(filepath.Join("test-resources", "motions"))
+	if err != nil {
+		return photos.Photo{}, err
+	}
+
+	for _, fileInfo := range fileInfos {
+		file, err := os.Open(filepath.Join("test-resources", "motions", fileInfo.Name()))
 		if err != nil {
 			return photos.Photo{}, err
 		}
+
 		pngImage, err := png.Decode(file)
 		if err != nil {
 			return photos.Photo{}, err
