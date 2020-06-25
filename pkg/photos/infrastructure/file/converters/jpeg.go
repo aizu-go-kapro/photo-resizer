@@ -10,6 +10,8 @@ import (
 
 type JpegConverter struct{}
 
+const JpegQuality = 80
+
 func NewJpegConverter() JpegConverter {
 	return JpegConverter{}
 }
@@ -26,7 +28,7 @@ func (c JpegConverter) Open(imageFile *os.File) (photos.Photo, error) {
 
 func (c JpegConverter) Save(out *os.File, photo photos.Photo) error {
 	encodingImage := photo.Images()[0] // とりあえず1枚目以外は無視
-	err := jpeg.Encode(out, encodingImage, &jpeg.Options{})
+	err := jpeg.Encode(out, encodingImage, &jpeg.Options{Quality: JpegQuality})
 	if err != nil {
 		return err
 	}
