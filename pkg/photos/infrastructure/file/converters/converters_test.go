@@ -3,6 +3,7 @@ package converters
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"image"
 	"image/png"
 	"io"
@@ -82,12 +83,14 @@ func TestUploadImageToImgur(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	imageUrl, err := uploadImageToImgur(imageData, "946667977ad0113")
+	imageUrl, err := uploadImageToImgur(imageData)
 	t.Log("Image Uploaded To", imageUrl)
 }
 
 // upload to imgur ref: https://stackoverflow.com/questions/53426576/can-i-upload-image-to-imgur-via-golang
-func uploadImageToImgur(image io.Reader, token string) (string, error) {
+func uploadImageToImgur(image io.Reader) (string, error) {
+	token := os.Getenv("IMGUR_CLIENT_ID")
+
 	var buf = new(bytes.Buffer)
 	writer := multipart.NewWriter(buf)
 
@@ -114,6 +117,12 @@ func uploadImageToImgur(image io.Reader, token string) (string, error) {
 	err = json.NewDecoder(res.Body).Decode(&decodedResponse)
 	if err != nil {
 		return "", err
+	}
+
+	fmt.Println(decodedResponse)
+
+	if decodedResponse.Data.Link == "" {
+		return string(decodedResponse.Status), nil
 	}
 
 	return decodedResponse.Data.Link, nil
