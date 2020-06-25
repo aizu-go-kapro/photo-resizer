@@ -2,6 +2,7 @@ package converters
 
 import (
 	"image"
+	"image/png"
 	"os"
 
 	"github.com/aizu-go-kapro/photo-resizer/pkg/photos/domain/photos"
@@ -15,11 +16,19 @@ func NewPngConverter() PngConverter {
 
 func (c PngConverter) Open(imageFile *os.File) (photos.Photo, error) {
 	var newPhoto []image.Image
-	// TODO: png画像をimage.Imageの配列に変換する処理
+	convertedImage, err := png.Decode(imageFile)
+	newPhoto = append(newPhoto, convertedImage)
+	if err != nil {
+		return photos.Photo{}, err
+	}
 	return photos.NewPhoto(newPhoto), nil
 }
 
 func (c PngConverter) Save(out *os.File, photo photos.Photo) error {
-	// TODO: image.Imageの配列をpng画像に変換する処理。変換したファイルはoutに書き込む。
+	encodingImage := photo.Images()[0] // とりあえず1枚目以外は無視
+	err := png.Encode(out, encodingImage)
+	if err != nil {
+		return err
+	}
 	return nil
 }
