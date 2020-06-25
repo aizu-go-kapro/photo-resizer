@@ -3,6 +3,7 @@ package converters
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"image"
 	"image/png"
@@ -16,6 +17,8 @@ import (
 
 	"github.com/aizu-go-kapro/photo-resizer/pkg/photos/domain/photos"
 )
+
+var ImgurUploadError = errors.New("uploading image was failed. maybe your file is corrupted. if your file is ok, it may be apikey problem")
 
 // edited: https://github.com/golang/tour/blob/master/pic/pic.go#L35
 func writeImage(m image.Image) (*os.File, error) {
@@ -125,8 +128,8 @@ func uploadImageToImgur(image *os.File) (string, error) {
 
 	fmt.Println(decodedResponse)
 
-	if decodedResponse.Data.Link == "" {
-		return string(decodedResponse.Status), nil
+	if decodedResponse.Success == false {
+		return string(decodedResponse.Status), ImgurUploadError
 	}
 
 	return decodedResponse.Data.Link, nil
