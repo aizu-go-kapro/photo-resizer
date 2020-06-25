@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"image"
 	"image/png"
 	"io"
@@ -125,8 +124,6 @@ func uploadImageToImgur(image *os.File) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
-	fmt.Println(decodedResponse)
 
 	if decodedResponse.Success == false {
 		return string(decodedResponse.Status), ImgurUploadError
