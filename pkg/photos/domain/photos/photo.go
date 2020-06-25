@@ -20,8 +20,32 @@ func (ph Photo) Images() []image.Image {
 
 // リサイズメソッド。rateに拡大倍率を入れて実行すると新しいPhotoが返る。
 func (ph *Photo) Resize(rate float64) Photo {
-	processingPhoto := *ph
-	// TODO: リサイズ処理
+	if rate <= 0 {
+		rate = 1
+	}
+	processingImages := make([]image.Image, len(ph.Images()))
+	for i, img := range ph.Images() {
+		// rateからキャンバスサイズを求め、Rectangleを生成する
+		yDotsOriginal := img.Bounds().Max.Y - img.Bounds().Min.Y
+		xDotsOriginal := img.Bounds().Max.X - img.Bounds().Min.X
+		yDots := int(float64(yDotsOriginal) * (rate / 100.0))
+		xDots := int(float64(xDotsOriginal) * (rate / 100.0))
+		processingImage := image.NewRGBA(image.Rectangle{
+			Min: image.Point{X: img.Bounds().Min.X, Y: img.Bounds().Min.Y},
+			Max: image.Point{X: img.Bounds().Min.X + xDots, Y: img.Bounds().Min.Y + yDots},
+		})
+
+		for y := 0; y < processingImage.Bounds().Max.Y; y += 1 {
+			for x := 0; x < processingImage.Bounds().Max.X; x += 1 {
+				// 変換の画像と変換後の画像で最も近い距離の点を求め、そこのドットをセットする (Nearest Neighbor)
+				originalY := math.Max(0, math.Min(float64(y)/(rate/100.0), float64(yDotsOriginal)))
+				originalX := math.Max(0, math.Min(float64(x)/(rate/100.0), float64(xDotsOriginal)))
+				processingImage.Set(x, y, img.At(img.Bounds().Min.X+int(originalX), img.Bounds().Min.Y+int(originalY)))
+			}
+		}
+		processingImages[i] = processingImage
+	}
+	processingPhoto := NewPhoto(processingImages)
 	return processingPhoto
 }
 
