@@ -25,8 +25,17 @@ func (ph *Photo) Resize(rate float64) Photo {
 
 // グレールケール化メソッド。この関数を呼ぶとカラーの写真がグレースケールになる。
 func (ph *Photo) ConvertToGrayscale() Photo {
-	processingPhoto := *ph
-	// TODO: グレールケール化処理
+	processingImages := make([]image.Image, len(ph.Images()))
+	for i, img := range ph.Images() {
+		processingImage := image.NewGray(img.Bounds())
+		for y := img.Bounds().Min.Y; y < img.Bounds().Max.Y; y += 1 {
+			for x := img.Bounds().Min.X; x < img.Bounds().Max.X; x += 1 {
+				processingImage.Set(x, y, img.At(x, y))
+			}
+		}
+		processingImages[i] = processingImage
+	}
+	processingPhoto := NewPhoto(processingImages)
 	return processingPhoto
 }
 
