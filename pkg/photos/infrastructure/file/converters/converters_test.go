@@ -88,14 +88,18 @@ func TestUploadImageToImgur(t *testing.T) {
 }
 
 // upload to imgur ref: https://stackoverflow.com/questions/53426576/can-i-upload-image-to-imgur-via-golang
-func uploadImageToImgur(image io.Reader) (string, error) {
+func uploadImageToImgur(image *os.File) (string, error) {
 	token := os.Getenv("IMGUR_CLIENT_ID")
 
 	var buf = new(bytes.Buffer)
 	writer := multipart.NewWriter(buf)
 
 	part, _ := writer.CreateFormFile("image", "dont care about name")
-	_, err := io.Copy(part, image)
+	_, err := image.Seek(0, io.SeekStart)
+	if err != nil {
+		return "", err
+	}
+	_, err = io.Copy(part, image)
 	if err != nil {
 		return "", err
 	}
