@@ -4,8 +4,6 @@ import (
 	"io/ioutil"
 	"os"
 	"testing"
-
-	"github.com/pkg/browser"
 )
 
 func TestGifConverter_Open(t *testing.T) {
@@ -27,10 +25,12 @@ func TestGifConverter_Open(t *testing.T) {
 		}
 		filePath := file.Name()
 		t.Log("The file path : ", filePath)
-		err = browser.OpenURL(filePath)
+
+		imageUrl, err := uploadImageToImgur(file)
 		if err != nil {
 			t.Fatal(err)
 		}
+		t.Log("Url: ", imageUrl)
 	}
 }
 
@@ -53,8 +53,9 @@ func TestGifConverter_Save(t *testing.T) {
 
 	filePath := file.Name()
 	t.Log("The file path : ", filePath)
-	err = browser.OpenURL(filePath)
+	imageUrl, err := uploadImageToImgur(file)
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Log("Url: ", imageUrl)
 }
