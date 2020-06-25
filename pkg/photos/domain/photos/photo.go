@@ -75,8 +75,8 @@ func (ph *Photo) Pixelate(side int) Photo {
 		processingImage := image.NewRGBA(img.Bounds())
 		yDots := img.Bounds().Max.Y - img.Bounds().Min.Y
 		xDots := img.Bounds().Max.X - img.Bounds().Min.X
-		yBlocks := yDots / side
-		xBlocks := xDots / side
+		yBlocks := (yDots / side) + 1
+		xBlocks := (xDots / side) + 1
 		for yBlock := 0; yBlock < yBlocks; yBlock += 1 {
 			for xBlock := 0; xBlock < xBlocks; xBlock += 1 {
 				// ブロックの部分内の色の平均を取る
